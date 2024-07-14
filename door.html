@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Door</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <div class="container">
+        <h2>Find the Door</h2>
+        <div>
+            <label for="doorPosition">Enter the position of the door (n):</label>
+            <input type="number" id="doorPosition" min="0" placeholder="Enter a number">
+            <button onclick="findDoor()">Find Door</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function findDoor() {
+            var n = parseInt(document.getElementById('doorPosition').value);
+            if (isNaN(n)) {
+                alert("Please enter a valid number.");
+                return;
+            }
+
+            var position = 0;
+            var steps = 0;
+            var i = 0;
+
+            while (position !== n) {
+                // Move right 2^i steps
+                for (var j = 0; j < Math.pow(2, i); j++) {
+                    steps++;
+                    position++;
+                    if (position === n) {
+                        displayResult(steps);
+                        return;
+                    }
+                }
+
+                // Return to initial position
+                steps++;
+
+                // Move left 2^i steps
+                for (var j = 0; j < Math.pow(2, i); j++) {
+                    steps++;
+                    position--;
+                    if (position === n) {
+                        displayResult(steps);
+                        return;
+                    }
+                }
+
+                // Return to initial position
+                steps++;
+
+                // Increase i to move exponentially farther
+                i++;
+            }
+
+            displayResult(steps);
+        }
+
+        function displayResult(steps) {
+            var resultDiv = document.getElementById('result');
+            resultDiv.textContent = "Number of steps needed to find the door: " + steps;
+        }
+    </script>
+  
+</body>
+</html>
